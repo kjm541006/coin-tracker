@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -77,9 +78,13 @@ export default function Coins() {
   // }, []);
 
   const { isLoading, data } = useQuery<CoinInterface[]>(["allcoins"], fetchCoins);
+  console.log(data?.slice(0, 100));
 
   return (
     <Container>
+      <Helmet>
+        <title>가상화폐 정보</title>
+      </Helmet>
       <Header>
         <Title>코인</Title>
       </Header>
@@ -96,8 +101,7 @@ export default function Coins() {
                 state={{ name: coin.name }}
               >
                 <Img
-                  // src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLocaleLowerCase()}`}
-                  src={`https://cryptoicons.org/api/icon/${coin.symbol.toLocaleLowerCase()}/200`}
+                  src={`https://cryptocurrencyliveprices.com/img/${coin.id.toLocaleLowerCase()}.png`}
                 />
                 {coin.name} &rarr;
               </Link>

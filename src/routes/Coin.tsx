@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link, Route, Routes, useMatch } from "react-router-dom";
@@ -43,7 +44,7 @@ interface PriceData {
   max_supply: number;
   beta_value: number;
   first_data_at: string;
-  last_updated: string;
+  last_updated: any;
   quotes: {
     USD: {
       ath_date: string;
@@ -161,18 +162,32 @@ export default function Coin() {
   //   })();
   // }, []);
 
-  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(["info", coinId], () =>
-    fetchCoinInfo(coinId!)
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(coinId!),
+    {
+      refetchInterval: 300000,
+    }
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId!)
+    () => fetchCoinTickers(coinId!),
+    {
+      refetchInterval: 300000,
+    }
   );
+
+  console.log(infoData);
+  console.log(tickersData);
 
   const loading = infoLoading || tickersLoading;
 
   return (
     <Container>
+      <Helmet>
+        <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
+      </Helmet>
+      <Link to={"/"}>홈으로</Link>
       <Header>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
@@ -190,6 +205,7 @@ export default function Coin() {
           <span>{tickersData?.max_supply}</span>
         </OverviewItem>
       </Overview>
+      <Description>업데이트: {new Date(tickersData?.last_updated).toLocaleString()}</Description>
       <Description>{infoData?.description}</Description>
       <Overview>
         <OverviewItem>
@@ -201,8 +217,8 @@ export default function Coin() {
           <span>{tickersData?.quotes.USD.percent_change_7d}%</span>
         </OverviewItem>
         <OverviewItem>
-          <span>업데이트</span>
-          <span>{date.toLocaleString()}</span>
+          <span>가격</span>
+          <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
         </OverviewItem>
       </Overview>
       <Tabs>
@@ -215,7 +231,7 @@ export default function Coin() {
       </Tabs>
       <Routes>
         <Route path="chart" element={<Chart coinId={coinId!} />} />
-        <Route path="price" element={<Price />} />
+        <Route path="price" element={<Price coinId={coinId!} />} />
       </Routes>
     </Container>
   );
