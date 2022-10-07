@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { Link, Route, Routes, useMatch } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import Chart from "./Chart";
+import Price from "./Price";
 
 interface InfoData {
   id: string;
@@ -109,6 +112,26 @@ const Description = styled.p`
   margin: 20px 0;
 `;
 
+const Tabs = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+  background-color: rgba(0, 0, 0, 0.5);
+  flex: 1;
+  text-align: center;
+  border-radius: 10px;
+  padding: 7px 0;
+  color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+  a {
+    display: block;
+  }
+`;
+
 export default function Coin() {
   const { coinId } = useParams();
   const location = useLocation();
@@ -116,6 +139,11 @@ export default function Coin() {
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<InfoData>();
   const [price, setPrice] = useState<PriceData>();
+  const [date, setDate] = useState(new Date());
+  const priceMatch = useMatch(`/:coinId/price`);
+  const chartMatch = useMatch(`/:coinId/chart`);
+  console.log(priceMatch);
+  console.log(chartMatch);
 
   useEffect(() => {
     (async () => {
@@ -128,6 +156,8 @@ export default function Coin() {
       setInfo(infoData);
       setPrice(priceData);
       setLoading(false);
+      setDate(new Date(priceData.last_updated));
+      console.log(date.toLocaleString());
     })();
   }, []);
 
@@ -136,37 +166,47 @@ export default function Coin() {
       <Header>
         <Title>{state?.name ? state.name : loading ? "Loading..." : info?.name}</Title>
       </Header>
-      <>
-        <Overview>
-          <OverviewItem>
-            <span>Rank</span>
-            <span>{info?.rank}</span>
-          </OverviewItem>
-          <OverviewItem>
-            <span>Symbol</span>
-            <span>${info?.symbol}</span>
-          </OverviewItem>
-          <OverviewItem>
-            <span>최대 공급량</span>
-            <span>{price?.max_supply}</span>
-          </OverviewItem>
-        </Overview>
-        <Description>{info?.description}</Description>
-        <Overview>
-          <OverviewItem>
-            <span>유통 공급량</span>
-            <span>{price?.circulating_supply}</span>
-          </OverviewItem>
-          <OverviewItem>
-            <span>변동(7일)</span>
-            <span>{price?.quotes.USD.percent_change_7d}%</span>
-          </OverviewItem>
-          <OverviewItem>
-            <span>거래량</span>
-            <span>{price?.quotes.USD.percent_change_7d}</span>
-          </OverviewItem>
-        </Overview>
-      </>
+      <Overview>
+        <OverviewItem>
+          <span>Rank</span>
+          <span>{info?.rank}</span>
+        </OverviewItem>
+        <OverviewItem>
+          <span>Symbol</span>
+          <span>${info?.symbol}</span>
+        </OverviewItem>
+        <OverviewItem>
+          <span>최대 공급량</span>
+          <span>{price?.max_supply}</span>
+        </OverviewItem>
+      </Overview>
+      <Description>{info?.description}</Description>
+      <Overview>
+        <OverviewItem>
+          <span>유통 공급량</span>
+          <span>{price?.circulating_supply}</span>
+        </OverviewItem>
+        <OverviewItem>
+          <span>변동(7일)</span>
+          <span>{price?.quotes.USD.percent_change_7d}%</span>
+        </OverviewItem>
+        <OverviewItem>
+          <span>업데이트</span>
+          <span>{date.toLocaleString()}</span>
+        </OverviewItem>
+      </Overview>
+      <Tabs>
+        <Tab isActive={chartMatch !== null}>
+          <Link to={`/${coinId}/chart`}>차트</Link>
+        </Tab>
+        <Tab isActive={priceMatch !== null}>
+          <Link to={`/${coinId}/price`}>가격</Link>
+        </Tab>
+      </Tabs>
+      <Routes>
+        <Route path="price" element={<Price />} />
+        <Route path="chart" element={<Chart />} />
+      </Routes>
     </Container>
   );
 }

@@ -84,7 +84,7 @@ export default function Coins() {
       ) : (
         <CoinsList>
           {coins.map((coin) => (
-            <Coin key={coin.id}>
+            <Coin key={coin.id} id={coin.id}>
               <Link
                 to={{
                   pathname: `/${coin.id}`,
