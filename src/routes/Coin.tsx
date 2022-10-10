@@ -129,7 +129,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   border-radius: 10px;
   padding: 7px 0;
-  color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+  color: ${(props) => (props.isActive ? props.theme.accentColor : "white")};
   a {
     display: block;
   }
