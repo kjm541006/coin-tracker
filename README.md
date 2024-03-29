@@ -1,46 +1,41 @@
-# Getting Started with Create React App
+# Coin Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 개인프로젝트
 
-## Available Scripts
+## 🔗 URL
 
-In the project directory, you can run:
+https://kjm541006.github.io/coin-tracker
 
-### `npm start`
+## 🧑‍💻 개발 배경
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+리액트와 타입스크립트를 사용하여 개발하는 프로젝트를 해보고 싶었습니다. 가상화폐가 인기가 많아지면서 가상화폐의 시세를 직접 확인할 수 있는 사이트를 만들어보고 싶어서 개발해보게 되었습니다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🧑‍💻 기능 설명
 
-### `npm test`
+가상화폐 목록, 차트, 가격 등 가상화폐에 대해 여러가지 정보를 알 수 있습니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 차트  
+  차트 탭에서는 선택된 가상화폐의 가격 변동 추이를 확인 할 수 있습니다.
 
-### `npm run build`
+- 가격  
+  가격 탭에서는 선택한 가상화폐의 시가와 종가, 최고가격, 최저가격등의 정보를 알 수 있습니다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+5분마다 암호화폐의 가격 변동 이력을 가져오도록 구현했습니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🧑‍💻 사용기술 및 배운점
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- TYPESCRIPT  
+  Typescript를 사용하여 코드를 작성하는 도중에 타입 에러를 발견해 런타임 오류를 줄일 수 있었습니다
 
-### `npm run eject`
+- API  
+  Coinpaprika API를 사용하여 코인 정보를 수집 하였습니다.  
+  API를 사용해 개발할 수 있는 좋은 기회였습니다. 비동기로 처리하여 api 응답을 기다리는동안 페이지 렌더링이 이루어지도록 하며 Loading중인 것을 알려주어 사용자 경험을 개선할 수 있었습니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- ApexCharts 라이브러리  
+  ApexCharts를 사용하여 차트를 쉽게 구현할 수 있었습니다.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### 로컬 실행방법
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+npm start
